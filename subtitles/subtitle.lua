@@ -6,6 +6,7 @@ Subtitle class provides methods for storing and comparing subtitle lines.
 ]]
 
 local mp = require('mp')
+local h = require('helpers')
 
 local Subtitle = {
     ['text'] = '',
@@ -23,8 +24,13 @@ end
 
 function Subtitle:now(secondary)
     local prefix = secondary and "secondary-" or ""
+    local raw_text = mp.get_property(prefix .. "sub-text")
+    -- 只对主字幕应用双语检测和过滤，副字幕直接返回原文
+    -- 原因：1. 副字幕通常是纯翻译，会污染检测计数器
+    --       2. 双语模式下单行无假名内容会被过滤为空，导致副字幕丢失
+    local text = secondary and raw_text or h.get_japanese_from_subtext(raw_text)
     local this = self:new {
-        ['text'] = mp.get_property(prefix .. "sub-text"),
+        ['text'] = text,
         ['start'] = mp.get_property_number(prefix .. "sub-start"),
         ['end'] = mp.get_property_number(prefix .. "sub-end"),
     }

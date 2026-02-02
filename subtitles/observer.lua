@@ -41,6 +41,9 @@ local function append_primary_sub()
     all_dialogs.insert(current_sub)
     if append_dialogue and dialogs.insert(current_sub) then
         self.menu:update()
+    elseif self.menu and self.menu.active then
+        -- 菜单打开时也刷新（显示双语过滤状态）
+        self.menu:update()
     end
 end
 
@@ -94,9 +97,12 @@ end
 
 local function current_subtitle_lines()
     local primary = dialogs.get_text()
+    local primary_from_dialogs = not h.is_empty(primary)
 
-    if h.is_empty(primary) then
+    if not primary_from_dialogs then
+        -- 从原始字幕获取，需要先过滤
         primary = mp.get_property("sub-text")
+        primary = h.filter_bilingual_subtitle(primary)
     end
 
     if h.is_empty(primary) then
@@ -151,7 +157,10 @@ autoclip_method = (function()
 end)()
 
 local function copy_subtitle(subtitle_id)
-    self.copy_to_clipboard("copy-on-demand", mp.get_property(subtitle_id))
+    -- 直接获取的原始字幕需要先过滤
+    local text = mp.get_property(subtitle_id)
+    text = h.filter_bilingual_subtitle(text)
+    self.copy_to_clipboard("copy-on-demand", text)
 end
 
 ------------------------------------------------------------

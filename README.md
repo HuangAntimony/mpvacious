@@ -80,11 +80,13 @@ Bilingual filter: 关闭
 
 ```bash
 # Windows (portable_config)
-git clone https://github.com/YOUR_USERNAME/mpvacious.git "mpv目录/portable_config/scripts/subs2srs"
+git clone https://github.com/HuangAntimony/mpvacious.git "mpv目录/portable_config/scripts/subs2srs"
 
-# Linux
-git clone https://github.com/YOUR_USERNAME/mpvacious.git ~/.config/mpv/scripts/subs2srs
+# macOS/Linux
+git clone https://github.com/HuangAntimony/mpvacious.git ~/.config/mpv/scripts/subs2srs
 ```
+
+或者直接通过此链接下载源码后放到对应目录: https://github.com/HuangAntimony/mpvacious/archive/refs/heads/master.zip
 
 ## 配置
 
